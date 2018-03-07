@@ -79,6 +79,6 @@ function bidali_hautatutakoak(){
         data: { informazioa: bidaltzeko },
      })
      .done (function( msg ) {
-        alert( "Zure bozka ondo gorde da: " + msg );
+        alert( "Zerbitzariaren erantzuna: " + msg );
     });
 }
