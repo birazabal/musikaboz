@@ -163,7 +163,7 @@ function bistaratu_playlist(){
 
 }
 //bidali_hautatuak.php
-//4.- Aukerak gordetzeko funtzioa
+//4.- Aukerak gordetzeko funtzioak
 //hautapen 1 gordetzeko funtzioa
 function gorde_datubasean_hautapena($info,$conn){
 
@@ -225,7 +225,8 @@ function begiratu_info_mp3($file){
 }
 
 function kargatu_datubasea_abestiz(){
-
+	//taulak husteko funtzioa probatuz
+	//hustu_taulak();
 	$conn = konektatu();
 	$dir = "/opt/lampp/htdocs/musikaboz/musika/*";
 
@@ -249,6 +250,29 @@ function kargatu_datubasea_abestiz(){
    
 	}
 	deskonektatu($conn);
+}
+//DATUBASEA SORTZEKO FUNTZIOAK *** etorkizunean
+//DATUBASEKO TAULAK HUSTEKO FUNTZIOAK 
+function hustu_taulak(){
+	$conn = konektatu();
+	hustu_taula("bozkak",$conn);
+	hustu_taula("abestiak",$conn);	
+	deskonektatu($conn);
+	echo "taulak ondo hustu dira";
+	
+}
+//taula bat husteko funtzioa
+function hustu_taula($taula, $conn){
+	$sql = "DELETE from " . $taula . " WHERE 1;";
+	if ($conn->query($sql) == TRUE) {
+    		echo "Taula hustu egin da";
+	} else {
+    		echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+}
+//bozkak taula husteko funtzioa
+function hustu_bozkak($conn){
+	hustu_taula("bozkak",$conn);
 }
 function sortu_kodea(){
     return rand(1,10000);

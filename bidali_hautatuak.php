@@ -13,9 +13,5 @@ if (count($nirealdagai) == 3){
 	echo "3 abesti aukeratu behar dira derrigorrez";
 
 }
-
-//$inprimatzeko = (string)$nirealdagai;
-
-
 ?> 
 

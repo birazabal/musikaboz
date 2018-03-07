@@ -71,7 +71,7 @@ function aukeratu_zerrenda_zaharra(){
 function bidali_hautatutakoak(){ 
 
      bidaltzeko = aukeratu_zerrenda();
-     alert(bidaltzeko);
+     //alert(bidaltzeko);
      //bidaltzeko = "nire string"      
      $.ajax({
   	method: "POST",
