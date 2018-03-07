@@ -3,7 +3,8 @@ include 'zerbitzari_funtzioak.php';
 
 //informazioa POST moduan jaso :(
 $nirealdagai = $_POST["informazioa"];
-echo "kaixo zerbitzaritik, bidalitako aldagaia: " . $nirealdagai;
+//$inprimatzeko = (string)$nirealdagai;
+//echo "kaixo zerbitzaritik, bidalitako aldagaia: " . $inprimatzeko;
 gorde_datubasean_hautapenak($nirealdagai);
 
 ?> 

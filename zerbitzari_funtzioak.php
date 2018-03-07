@@ -164,21 +164,35 @@ function bistaratu_playlist(){
 }
 //bidali_hautatuak.php
 //4.- Aukerak gordetzeko funtzioa
-function gorde_datubasean_hautapenak($info){
+//hautapen 1 gordetzeko funtzioa
+function gorde_datubasean_hautapena($info,$conn){
 
-	$conn = konektatu();
-        //$bozkakodea = sortu_kodea();
-	//begiratu iada erregistratuta dagoen edo ez
-	$sql = "INSERT INTO bozkak (ab_id,bozka_kop) VALUES (" . $info[0] . ", 1)";
+	//$conn = konektatu();
 
+	//$sql = "INSERT INTO bozkak (ab_id,bozka_kop) VALUES (" . $info[0] . ", 1)";
+	$sql = "INSERT INTO bozkak (ab_id,bozka_kop) VALUES (" . $info . ", 1)";
 	if ($conn->query($sql) == TRUE) {
     		echo "Zure bozka datubasean ondo erregistratu da";
 	} else {
     		echo "Error: " . $sql . "<br>" . $conn->error;
 	}
 
-	deskonektatu($conn);
+	//deskonektatu($conn);
 }
+//5 hautapen gordetzeko funtzioa
+function gorde_datubasean_hautapenak($info){
+
+	$conn = konektatu();
+        //$bozkakodea = sortu_kodea();
+	//begiratu iada erregistratuta dagoen edo ez
+	foreach($info as $item) {
+		$item = (string)$item;
+		gorde_datubasean_hautapena($item,$conn);
+	}
+	deskonektatu($conn);	
+}
+
+
 
 //kargatu_datubasea_abestiz.php
 //5.- Datubasea abestiz KARGATZEKO funtzioak

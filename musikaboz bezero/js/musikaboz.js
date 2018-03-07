@@ -44,6 +44,20 @@ function playerra_bistaratu(){
 }
 
 function aukeratu_zerrenda(){
+	aukeratuak = [];
+	i = 0;       
+	 $("input:checked").each(function() {
+           aukeratuak[i] = ($(this).val());
+	   i = i + 1;
+	   //alert($(this).val());
+           //console.log($(this).val());        
+	});
+        return aukeratuak;
+
+}
+
+
+function aukeratu_zerrenda_zaharra(){
 	aukeratuak = "";       
 	 $("input:checked").each(function() {
            aukeratuak = aukeratuak + ($(this).val());
