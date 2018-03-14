@@ -243,7 +243,14 @@ function kargatu_datubasea_abestiz(){
 		$taldea = begiratu_info_mp3($file)[1];
 		$fitxizena = basename($file);
 		//irudia bilatu 1.0 > Oraingoz taldeaz emaitza gehien :(
-		$irudia = topatu_irudia_bing($taldea);
+		if (topatu_irudia_bing($taldea) != " " ){
+			$katea = $abestia . " " . $taldea;		
+			$irudia = topatu_irudia_bing($katea);
+		}else{
+			$katea = $taldea;
+			$irudia = topatu_irudia_bing($katea);
+		}
+
 		$bidea = "http://localhost/musikaboz/musika/" . $fitxizena;
 		$sql = "INSERT INTO abestiak (ab_id, mota, taldea, abestia, iturria, irudia) VALUES ("  . $i . ",'lokala','" . $taldea . "','" . $abestia . "','" . $bidea . "','" . $irudia . "');";
 		$i = $i + 1 ;
@@ -283,6 +290,7 @@ function sortu_kodea(){
     return rand(1,10000);
 }
 //abestiei iruditxo bat topatzeko funtzioa 1.0
+//https://stackoverflow.com/questions/16855957/return-google-image-search-results-in-html-using-php
 function topatu_irudia_bing($testua){
 
 	$url = "http://www.bing.com/images/search?".urlencode(strtolower($testua))."&count=1&q=".urlencode($testua);
@@ -310,7 +318,7 @@ function topatu_irudia_bing($testua){
 		//$zenbat = $non2 - $non3;
 		//echo $zenbat;
 		$emaitza4 = substr($emaitza3, 0, $non3);
-		echo $emaitza4;
+		//echo $emaitza4;
 		echo "<img src='" . $emaitza4 . "' witdh='100px' height='100px'/>";
 	}else{
 		echo 'False';
