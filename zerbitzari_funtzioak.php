@@ -229,7 +229,7 @@ function begiratu_info_mp3($file){
 
 function kargatu_datubasea_abestiz(){
 	//taulak husteko funtzioa probatuz
-	//hustu_taulak();
+	hustu_taulak();
 	$conn = konektatu();
 	$dir = "/opt/lampp/htdocs/musikaboz/musika/*";
 
@@ -242,8 +242,10 @@ function kargatu_datubasea_abestiz(){
 		$abestia = begiratu_info_mp3($file)[0];
 		$taldea = begiratu_info_mp3($file)[1];
 		$fitxizena = basename($file);
+		//irudia bilatu 1.0 > Oraingoz taldeaz emaitza gehien :(
+		$irudia = topatu_irudia_bing($taldea);
 		$bidea = "http://localhost/musikaboz/musika/" . $fitxizena;
-		$sql = "INSERT INTO abestiak (ab_id, mota, taldea, abestia, iturria, irudia) VALUES ("  . $i . ",'lokala','" . $taldea . "','" . $abestia . "','" . $bidea . "','irudiarenURL');";
+		$sql = "INSERT INTO abestiak (ab_id, mota, taldea, abestia, iturria, irudia) VALUES ("  . $i . ",'lokala','" . $taldea . "','" . $abestia . "','" . $bidea . "','" . $irudia . "');";
 		$i = $i + 1 ;
 		if ($conn->query($sql) == TRUE) {	
 			echo "[>] ondo erregistratu da abestia datubasean</br>";	
@@ -279,6 +281,41 @@ function hustu_bozkak($conn){
 }
 function sortu_kodea(){
     return rand(1,10000);
+}
+//abestiei iruditxo bat topatzeko funtzioa 1.0
+function topatu_irudia_bing($testua){
+
+	$url = "http://www.bing.com/images/search?".urlencode(strtolower($testua))."&count=1&q=".urlencode($testua);
+	$data=file_get_contents($url);
+	$emaitza = (string)$data;
+	$emaitza = htmlspecialchars($emaitza);
+
+	//topatu beharreko katea hasieran konplikatu gabe,  topatzen duen lehen .jpg -a!
+    	$topatu = '.jpg';
+	
+	if ( stripos($emaitza, $topatu) !== false){
+		echo "**********************************************************************************";
+		//txapuzeroki iruditxo bat lortu BING-etik ;) kateen tratamentua askooo hobetu daiteke... edo DOM-a errekorritzen saiatu...
+		$non = stripos($emaitza,$topatu);
+		$emaitza2 = substr($emaitza, $non-300,600);
+		//echo $emaitza2;
+		$topatu2 = "http:";
+		$non2 = stripos($emaitza2,$topatu2);
+		$emaitza3 = substr($emaitza2, $non2, 300);
+		//echo $emaitza3; //http:dfdfasfds iada lortuta, baina soberakina kendu behar.
+		//echo "*********depuratuta>>***";
+		$topatu3 = "&quot;";
+		$non3 = stripos($emaitza3,$topatu3);
+		//echo $non2 . "-" . $non3 . " >>>>>>>>>>";
+		//$zenbat = $non2 - $non3;
+		//echo $zenbat;
+		$emaitza4 = substr($emaitza3, 0, $non3);
+		echo $emaitza4;
+		echo "<img src='" . $emaitza4 . "' witdh='100px' height='100px'/>";
+	}else{
+		echo 'False';
+	}
+	return $emaitza4;	
 }
 //************************ PHP funtzioen bukaera **********************************//
 
