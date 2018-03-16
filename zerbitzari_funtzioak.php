@@ -130,10 +130,9 @@ function begiratu_datubasean_hautatuak(){
 	$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc;";
         $result = $conn->query($sql);
 	if ($result->num_rows > 0){
-        	while($row = mysqli_fetch_assoc($result)){
-			$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";			
+        	while($row = mysqli_fetch_assoc($result)){			
 			//$irudia = $row["irudia"]
-			$bistaratu_zerrenda = $bistaratu_zerrenda . "<div id='lerroa'><div id='infoa'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "<b> BOZKAK: " .  $row["konta"] . "</b></div> <div id='lerroirudia'><img width='50px' height='50px' src='" . $irudia . "'/></div></div></br>";
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "<div id='lerroa'><div id='infoa'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "<b> BOZKAK: " .  $row["konta"] . "</b></div> <div id='lerroirudia'><img width='50px' height='50px' src='" . $row["irudia"] . "'/></div></div></br>";
 		}	
 	}
 
@@ -155,7 +154,7 @@ function bistaratu_playlist(){
         $result = $conn->query($sql);
 	if ($result->num_rows > 0){
         	while($row = mysqli_fetch_assoc($result)){
-			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'><img width='50px' height='50px' src='" . $irudia . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>"; //. "BOZKAK: " . (string)row["konta"] .
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'><img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>"; //. "BOZKAK: " . (string)row["konta"] .
 		}	
 	}
 	$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
@@ -242,16 +241,20 @@ function kargatu_datubasea_abestiz(){
 		$abestia = begiratu_info_mp3($file)[0];
 		$taldea = begiratu_info_mp3($file)[1];
 		$fitxizena = basename($file);
-		//irudia bilatu 1.0 > Oraingoz taldeaz emaitza gehien :(
-		if (topatu_irudia_bing($taldea) != " " ){
+		//irudia bilatu 1.0 > nahiko flojoa, xaukena xauk
+		if (topatu_irudia_bing($taldea) != "" ){
+			//echo "bilaketa1";
 			$katea = $abestia . " " . $taldea;		
 			$irudia = topatu_irudia_bing($katea);
 		}else{
+			//echo "bilaketa2";
 			$katea = $taldea;
 			$irudia = topatu_irudia_bing($katea);
 		}
-
-		$bidea = "http://localhost/musikaboz/musika/" . $fitxizena;
+		if (stripos($irudia,"http")) {
+			$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";
+		}
+		$bidea = "https://localhost/musikaboz/musika/" . $fitxizena;
 		$sql = "INSERT INTO abestiak (ab_id, mota, taldea, abestia, iturria, irudia) VALUES ("  . $i . ",'lokala','" . $taldea . "','" . $abestia . "','" . $bidea . "','" . $irudia . "');";
 		$i = $i + 1 ;
 		if ($conn->query($sql) == TRUE) {	
@@ -307,7 +310,7 @@ function topatu_irudia_bing($testua){
 		$non = stripos($emaitza,$topatu);
 		$emaitza2 = substr($emaitza, $non-300,600);
 		//echo $emaitza2;
-		$topatu2 = "http:";
+		$topatu2 = "https:";
 		$non2 = stripos($emaitza2,$topatu2);
 		$emaitza3 = substr($emaitza2, $non2, 300);
 		//echo $emaitza3; //http:dfdfasfds iada lortuta, baina soberakina kendu behar.
