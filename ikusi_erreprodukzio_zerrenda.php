@@ -1,7 +1,6 @@
 <html>
 <!--http://devblog.lastrose.com/html5-audio-video-playlist/-->
-<audio id="audio" preload="auto" tabindex="0" controls="" >
-  <source src="http://localhost/musikaboz/musika/bulls on parade.mp3">
+<audio id='audio' preload='auto' tabindex='0' controls='' >
   <div id="rz"></div>
 </audio>
 <?php
