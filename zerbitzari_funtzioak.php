@@ -175,12 +175,12 @@ function bistaratu_playlist(){
 	if ($result->num_rows > 0){
         	while($row = mysqli_fetch_assoc($result)){
 			if ($i == 0){
-				$bistaratu_zerrenda = $bistaratu_zerrenda . $row["iturria"] . "'/>";
-			        $bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist'>";
+				$bistaratu_zerrenda = $bistaratu_zerrenda . $row["iturria"] . "'/></audio>";
+			        $bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist' list-style-type: none; >";
 				$i += 1;
-			}else{			
-				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'><img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>"; //. "BOZKAK: " . (string)row["konta"] .
-			}
+			}		
+				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active' text-decoration='none'><img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>";
+			
 		}	
 	}
 	$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";

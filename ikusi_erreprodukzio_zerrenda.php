@@ -2,7 +2,7 @@
 <!--http://devblog.lastrose.com/html5-audio-video-playlist/-->
 <audio id='audio' preload='auto' tabindex='0' controls='' >
   <div id="rz"></div>
-</audio>
+
 <?php
 include 'zerbitzari_funtzioak.php';
 
