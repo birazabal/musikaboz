@@ -1,3 +1,33 @@
+<html><head> <style>
+   	#iruditxoa{
+		border-radius:10px !important; 
+
+	}
+	.nireli {
+    		background: grey;
+    		margin: 1px;
+    		text-decoration: none;
+    		padding: 0.5%;
+    		
+	}
+	#bozkak{
+		float:left;
+		margin-left:10px;
+		margin-right:20px;
+		background-color:darkgreen;
+		vertical-align: middle;
+		padding:15px;
+		color:white;
+		border-radius:10px !important;
+		border:1px solid black;
+
+	}
+	#testua{
+		float:right;
+		vertical-align: middle;
+    		color: white;
+	}
+    </style></head><body>
 <?php
 //zerbitzariaren funtzio nagusiak biltzen
 //************************************PHP FUNTZIOEN HASIERA**********************************
@@ -124,7 +154,7 @@ function begiratu_datubasean(){
 //eman_hautatuen_zerrenda.php
 //2.-datubasean hautatuta daudenak inprimatzeko funtzioa
 function begiratu_datubasean_hautatuak(){
-        $bistaratu_zerrenda = " ";
+        $bistaratu_zerrenda = "<ul> ";
 	$conn = konektatu();
         //$bozkakodea = sortu_kodea();
 	$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc;";
@@ -132,10 +162,10 @@ function begiratu_datubasean_hautatuak(){
 	if ($result->num_rows > 0){
         	while($row = mysqli_fetch_assoc($result)){			
 			//$irudia = $row["irudia"]
-			$bistaratu_zerrenda = $bistaratu_zerrenda . "<div id='lerroa'><div id='infoa'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "<b> BOZKAK: " .  $row["konta"] . "</b></div> <div id='lerroirudia'><img width='50px' height='50px' src='" . $row["irudia"] . "'/></div></div></br>";
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireli'><div id='ab'><img id='iruditxoa' width='50px' height='50px' src='" . $row["irudia"] . "'/><div id='testua'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "</div><div id='bozkak'><b>" .  $row["konta"] . "</b></div></div></li></br>";
 		}	
 	}
-
+	$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
 	echo $bistaratu_zerrenda;
 	/* free result set */
         $result->free();
@@ -176,10 +206,10 @@ function bistaratu_playlist(){
         	while($row = mysqli_fetch_assoc($result)){
 			if ($i == 0){
 				$bistaratu_zerrenda = $bistaratu_zerrenda . $row["iturria"] . "'/></audio>";
-			        $bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist' list-style-type: none; >";
+			        $bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist'>";
 				$i += 1;
 			}		
-				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active' text-decoration='none'><img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>";
+				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'><img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>";
 			
 		}	
 	}
@@ -356,4 +386,4 @@ function topatu_irudia_bing($testua){
 }
 //************************ PHP funtzioen bukaera **********************************//
 
-?>
+?></body></html>
