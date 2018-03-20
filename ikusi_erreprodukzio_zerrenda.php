@@ -51,7 +51,7 @@ $(document).ready(function () {
 		aurrekoa.addEventListener('click',function(e){
 			current--;
 			if(current == -1){
-				current = len;
+				current = len-1;
 				link = playlist.find('a')[len];
 			}else{
 				link = playlist.find('a')[current];    
