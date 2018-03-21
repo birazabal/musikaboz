@@ -4,6 +4,7 @@
 		padding:10 !important; 
 
 	}
+
 	.nireli {
     		background: lightgrey;
     		margin: 1px;
@@ -32,6 +33,7 @@
     		color: white;
 		margin-right:10px;
 	}
+	
     </style></head><body>
 <?php
 //zerbitzariaren funtzio nagusiak biltzen
@@ -189,7 +191,7 @@ function bistaratu_playlist2(){
         $result = $conn->query($sql);
 	if ($result->num_rows > 0){
         	while($row = mysqli_fetch_assoc($result)){
-			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'><img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>"; //. "BOZKAK: " . (string)row["konta"] .
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'><img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'><div id='testua'>" . $row["taldea"] . " " .  $row["abestia"] . "</a></div><div id='ab'> BOZKAK:" . $row["konta"] . "/div></li></br>"; //. "BOZKAK: " . (string)row["konta"] .
 		}	
 	}
 	$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
@@ -204,7 +206,7 @@ function bistaratu_playlist(){
 	$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";			
 	$conn = konektatu();
         //$bozkakodea = sortu_kodea();
-	$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia,abestiak.iturria, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc;";
+	$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia,abestiak.iturria, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc LIMIT 10;";
         $result = $conn->query($sql);
 	$i = 1;
 	if ($result->num_rows > 0){
@@ -213,8 +215,9 @@ function bistaratu_playlist(){
 				$bistaratu_zerrenda = $bistaratu_zerrenda . $row["iturria"] . "'/></audio>";
 			        $bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist'>";
 				
-			}		
-				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'> <div id='zkia'>[". $i ."]</div> <img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>";
+			}	
+					
+				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li id='abestia'> <div id='zkia'> ". $i ."</div> <img id='iru'  src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'><div id='taldea'>" . $row["taldea"] . "</div><div id='abes'> " .  $row["abestia"] . "</div></a> <div id='bozkalist'>" . $row["konta"] . "</div></li>";
 			$i += 1;	
 		}	
 	}

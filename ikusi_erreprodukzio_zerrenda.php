@@ -1,8 +1,125 @@
 <html>
-<head></head><body>
-<div id='info'></div>
-<input type='button' value='au' id='aurrekoa'  />
-<input type='button' value='hu' id='hurrengoa'  />
+<head><style>
+#zkia{
+   border-radius:15px !important;
+   padding:5px !important; 
+   margin-top:10px;
+   background-color:orange;
+   color:white;
+   float:left;
+   margin-left:10px;
+   margin-right:5px;
+   min-width:20px;
+   text-align:center;
+
+	}
+#info {
+    float: left;
+    vertical-align: middle;
+    padding: 5px;
+    background:orange;
+    color:white;
+    border:1px solid black;
+    border-radius:20px;
+    margin-right:5px;
+    margin-left:5px;
+    border:1px solid #333;
+    box-shadow:1px 1px 2px black;
+    min-width:20px;
+    text-align:center;
+}
+#nirekontrolak {
+    margin-left:40%;
+    background: #303030;
+    width: 260px;
+    color: white;
+    padding:5px;
+
+
+}
+audio{
+    margin-left:40%;
+}
+#aurrekoa{
+   background: #404040;
+   padding: 5px;
+   color:white;
+   font-weight:bold;
+}
+#hurrengoa{
+   background: #404040;
+   padding:5px;
+   color:white;
+   font-weight:bold;
+}
+.active{
+   background: #404040 !important;
+   padding:5px;
+   color:white;
+   font-weight:bold;
+   border:2px solid orange !important;
+}
+#abestia{
+	background:#333;
+	text-decoration:none !important;
+	border-bottom:1px solid #404040;
+   
+}
+#abestia a{
+   color:white !important;
+   text-decoration:none !important;
+   margin-bottom:30px !important;
+   padding-left:10px;
+   font-size:12px;
+   text-shadow:1px 1px 3px black;	
+}
+#bozkalist{
+   float: right;
+   color: white;
+   text-shadow:1px 1px 1px black;
+   background: orange;
+   padding: 5px;
+   border:1px solid black;
+   box-shadow:1px 1px 2px black;
+}
+ul{
+	list-style:none;
+}
+#edukigehiago{
+
+float:right;
+background:#333;
+min-height:50px;
+min-width:700px;
+padding-bottom:-10px;
+color:white;
+text-shadow:1px 1px 1px black;
+}
+
+#taldea {
+    float: left;
+    vertical-align: middle !important;
+    padding-top:18px;
+    padding-left: 18px;
+    padding-right: 10px;
+}
+#abes {
+    float: left;
+    vertical-align: middle !important;
+    padding-top: 18px;
+    padding-left: 18px;
+    padding-right:10px;
+    color:orange;
+}
+#iru{
+    width:50px;
+    height:50px;
+    
+}
+</style></head><body>
+<div id="nirekontrolak"><div id="info">1</div>
+<input type="button" value="[<]" id="aurrekoa"  />
+<input type="button" value="[>]" id="hurrengoa"  /></div>
 
 <!--http://devblog.lastrose.com/html5-audio-video-playlist/-->
 <audio id='audio' preload='auto' tabindex='0' controls='' >
@@ -29,7 +146,8 @@ $(document).ready(function () {
 			e.preventDefault();
 			link = $(this);
 			current = link.parent().index();
-			info.html(current);
+			inpzkia = current + 1;
+			info.html(inpzkia);
 			run(link, audio[0]);
 		});
 		audio[0].addEventListener('ended',function(e){
@@ -40,7 +158,8 @@ $(document).ready(function () {
 			}else{
 				link = playlist.find('a')[current];    
 			}
-			info.html(current);
+			inpzkia = current + 1;
+			info.html(inpzkia);
 			run($(link),audio[0]);
 		});
 		hurrengoa.addEventListener('click',function(e){
@@ -51,7 +170,8 @@ $(document).ready(function () {
 			}else{
 				link = playlist.find('a')[current];    
 			}
-			info.html(current);
+			inpzkia = current + 1;
+			info.html(inpzkia);
 			run($(link),audio[0]);		
 		});
 		aurrekoa.addEventListener('click',function(e){
@@ -62,7 +182,8 @@ $(document).ready(function () {
 			}else{
 				link = playlist.find('a')[current];    
 			}
-			info.html(current);
+			inpzkia = current + 1;
+			info.html(inpzkia);
 			run($(link),audio[0]);		
 		});
 		
@@ -73,6 +194,7 @@ $(document).ready(function () {
 			par.addClass('active').siblings().removeClass('active');
 			player.load();
 			player.play();
+			info.html("0");
 	}
 });
 
