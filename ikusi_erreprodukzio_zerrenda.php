@@ -1,7 +1,9 @@
 <html>
 <head></head><body>
-<input type='button' value='hurrengoa' id='hurrengoa'  />
-<input type='button' value='aurrekoa' id='aurrekoa'  />
+<div id='info'></div>
+<input type='button' value='au' id='aurrekoa'  />
+<input type='button' value='hu' id='hurrengoa'  />
+
 <!--http://devblog.lastrose.com/html5-audio-video-playlist/-->
 <audio id='audio' preload='auto' tabindex='0' controls='' >
   <div id="rz"></div>
@@ -18,6 +20,7 @@ $(document).ready(function () {
 		var current = 0;
 		var audio = $('#audio');
 		var playlist = $('#playlist');
+		var info = $('#info');
 		var tracks = playlist.find('li a');
 		var len = tracks.length - 1;
 		audio[0].volume = .50;
@@ -26,6 +29,7 @@ $(document).ready(function () {
 			e.preventDefault();
 			link = $(this);
 			current = link.parent().index();
+			info.html(current);
 			run(link, audio[0]);
 		});
 		audio[0].addEventListener('ended',function(e){
@@ -36,26 +40,29 @@ $(document).ready(function () {
 			}else{
 				link = playlist.find('a')[current];    
 			}
+			info.html(current);
 			run($(link),audio[0]);
 		});
 		hurrengoa.addEventListener('click',function(e){
 			current++;
-			if(current == len){
+			if(current == len + 1){
 				current = 0;
 				link = playlist.find('a')[0];
 			}else{
 				link = playlist.find('a')[current];    
 			}
+			info.html(current);
 			run($(link),audio[0]);		
 		});
 		aurrekoa.addEventListener('click',function(e){
 			current--;
 			if(current == -1){
-				current = len-1;
+				current = len;
 				link = playlist.find('a')[len];
 			}else{
 				link = playlist.find('a')[current];    
 			}
+			info.html(current);
 			run($(link),audio[0]);		
 		});
 		

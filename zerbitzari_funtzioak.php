@@ -1,13 +1,17 @@
 <html><head> <style>
    	#iruditxoa{
-		border-radius:10px !important; 
+		border-radius:25px !important;
+		padding:10 !important; 
 
 	}
 	.nireli {
-    		background: grey;
+    		background: lightgrey;
     		margin: 1px;
     		text-decoration: none;
     		padding: 0.5%;
+		width:50%;
+		text-shadow:1px 1px 2px black;
+
     		
 	}
 	#bozkak{
@@ -18,14 +22,15 @@
 		vertical-align: middle;
 		padding:15px;
 		color:white;
-		border-radius:10px !important;
-		border:1px solid black;
+		//border-radius:20px !important;
+		border:1px solid darkgrey;
 
 	}
 	#testua{
 		float:right;
 		vertical-align: middle;
     		color: white;
+		margin-right:10px;
 	}
     </style></head><body>
 <?php
@@ -162,7 +167,7 @@ function begiratu_datubasean_hautatuak(){
 	if ($result->num_rows > 0){
         	while($row = mysqli_fetch_assoc($result)){			
 			//$irudia = $row["irudia"]
-			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireli'><div id='ab'><img id='iruditxoa' width='50px' height='50px' src='" . $row["irudia"] . "'/><div id='testua'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "</div><div id='bozkak'><b>" .  $row["konta"] . "</b></div></div></li></br>";
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireli'><div id='ab'><div id='bozkak'><b>" .  $row["konta"] . "</b></div><img id='iruditxoa' width='50px' height='50px' src='" . $row["irudia"] . "'/><div id='testua'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "</div></div></li></br>";
 		}	
 	}
 	$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
@@ -201,16 +206,16 @@ function bistaratu_playlist(){
         //$bozkakodea = sortu_kodea();
 	$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia,abestiak.iturria, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc;";
         $result = $conn->query($sql);
-	$i = 0;
+	$i = 1;
 	if ($result->num_rows > 0){
         	while($row = mysqli_fetch_assoc($result)){
-			if ($i == 0){
+			if ($i == 1){
 				$bistaratu_zerrenda = $bistaratu_zerrenda . $row["iturria"] . "'/></audio>";
 			        $bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist'>";
-				$i += 1;
+				
 			}		
-				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'><img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>";
-			
+				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='active'> <div id='zkia'>[". $i ."]</div> <img width='50px' height='50px' src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'>" . $row["taldea"] . " " .  $row["abestia"] . "</a> BOZKAK:" . $row["konta"] . "</li>";
+			$i += 1;	
 		}	
 	}
 	$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
@@ -307,7 +312,7 @@ function kargatu_datubasea_abestiz(){
 			$katea = $taldea;
 			$irudia = topatu_irudia_bing($katea);
 		}
-		if (stripos($irudia,"http")) {
+		if (!stripos($irudia,"http")) {
 			$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";
 		}
 		$bidea = "https://localhost/musikaboz/musika/" . $fitxizena;
