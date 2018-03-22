@@ -29,16 +29,16 @@
     text-align:center;
 }
 #nirekontrolak {
-    margin-left:40%;
-    background: #303030;
-    width: 260px;
+    background: #333;
+    width: 100%;
     color: white;
-    padding:5px;
+    padding:10px;
+    
 
 
 }
 audio{
-    margin-left:40%;
+    width:100%;
 }
 #aurrekoa{
    background: #404040;
@@ -102,6 +102,7 @@ text-shadow:1px 1px 1px black;
     padding-top:18px;
     padding-left: 18px;
     padding-right: 10px;
+    min-width:180px;
 }
 #abes {
     float: left;
@@ -110,16 +111,21 @@ text-shadow:1px 1px 1px black;
     padding-left: 18px;
     padding-right:10px;
     color:orange;
+    min-width:180px;
 }
 #iru{
     width:50px;
     height:50px;
     
 }
+#infoplay{
+	float:left;
+
+}
 </style></head><body>
 <div id="nirekontrolak"><div id="info">1</div>
 <input type="button" value="[<]" id="aurrekoa"  />
-<input type="button" value="[>]" id="hurrengoa"  /></div>
+<input type="button" value="[>]" id="hurrengoa"  /><div id="infoplay"></div></div>
 
 <!--http://devblog.lastrose.com/html5-audio-video-playlist/-->
 <audio id='audio' preload='auto' tabindex='0' controls='' >
@@ -138,6 +144,7 @@ $(document).ready(function () {
 		var audio = $('#audio');
 		var playlist = $('#playlist');
 		var info = $('#info');
+		var infoplay =$('#infoplay');
 		var tracks = playlist.find('li a');
 		var len = tracks.length - 1;
 		audio[0].volume = .50;
@@ -148,8 +155,10 @@ $(document).ready(function () {
 			current = link.parent().index();
 			inpzkia = current + 1;
 			info.html(inpzkia);
+			//infoplay.html(JSON.stringify(tracks[current]));
 			run(link, audio[0]);
 		});
+
 		audio[0].addEventListener('ended',function(e){
 			current++;
 			if(current == len){

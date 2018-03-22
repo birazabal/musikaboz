@@ -6,9 +6,10 @@
 	}
 
 	.nireli {
-    		background: lightgrey;
+    		background: #333;
     		margin: 1px;
     		text-decoration: none;
+		list-style:none;
     		padding: 0.5%;
 		width:50%;
 		text-shadow:1px 1px 2px black;
@@ -19,7 +20,7 @@
 		float:left;
 		margin-left:10px;
 		margin-right:20px;
-		background-color:darkgreen;
+		background-color:orange;
 		vertical-align: middle;
 		padding:15px;
 		color:white;
@@ -315,7 +316,7 @@ function kargatu_datubasea_abestiz(){
 			$katea = $taldea;
 			$irudia = topatu_irudia_bing($katea);
 		}
-		if (!stripos($irudia,"http")) {
+		if (stripos($irudia,".jpg") == false) {
 			$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";
 		}
 		$bidea = "https://localhost/musikaboz/musika/" . $fitxizena;
