@@ -218,7 +218,7 @@ function bistaratu_playlist(){
 				
 			}	
 					
-				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li id='abestia'> <div id='zkia'> ". $i ."</div> <img id='iru'  src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'><div id='taldea'>" . $row["taldea"] . "</div><div id='abes'> " .  $row["abestia"] . "</div></a> <div id='bozkalist'>" . $row["konta"] . "</div></li>";
+				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireliplay' id='abestia" . $i . "'> <div id='zkia'> ". $i ."</div> <img class='iru' id='iru" . $i ."'  src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'><div id='taldea'>" . $row["taldea"] . "</div><div id='abes'> " .  $row["abestia"] . "</div></a> <div id='bozkalist'>" . $row["konta"] . "</div></li>";
 			$i += 1;	
 		}	
 	}

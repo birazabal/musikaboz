@@ -59,13 +59,13 @@ audio{
    font-weight:bold;
    border:2px solid orange !important;
 }
-#abestia{
+.nireliplay{
 	background:#333;
 	text-decoration:none !important;
 	border-bottom:1px solid #404040;
    
 }
-#abestia a{
+.nireliplay a{
    color:white !important;
    text-decoration:none !important;
    margin-bottom:30px !important;
@@ -113,13 +113,23 @@ text-shadow:1px 1px 1px black;
     color:orange;
     min-width:180px;
 }
-#iru{
+.iru{
     width:50px;
     height:50px;
     
 }
 #infoplay{
-	float:left;
+
+   border-radius:15px !important;
+   padding:5px !important; 
+   margin-top:2px;
+   background-color:darkgrey;
+   color:white;
+   float:left;
+   margin-left:20px;
+   margin-right:20px;
+   min-width:400px;
+   text-align:center;
 
 }
 </style></head><body>
@@ -149,13 +159,15 @@ $(document).ready(function () {
 		var len = tracks.length - 1;
 		audio[0].volume = .50;
 		audio[0].play();
+		inpzkia = current + 1; 
+		inprimatuplay(infoplay,inpzkia);
 		playlist.on('click','a', function(e){
 			e.preventDefault();
 			link = $(this);
 			current = link.parent().index();
 			inpzkia = current + 1;
 			info.html(inpzkia);
-			//infoplay.html(JSON.stringify(tracks[current]));
+			inprimatuplay(infoplay, inpzkia);
 			run(link, audio[0]);
 		});
 
@@ -169,6 +181,7 @@ $(document).ready(function () {
 			}
 			inpzkia = current + 1;
 			info.html(inpzkia);
+			inprimatuplay(infoplay, inpzkia);
 			run($(link),audio[0]);
 		});
 		hurrengoa.addEventListener('click',function(e){
@@ -181,6 +194,7 @@ $(document).ready(function () {
 			}
 			inpzkia = current + 1;
 			info.html(inpzkia);
+			inprimatuplay(infoplay, inpzkia);
 			run($(link),audio[0]);		
 		});
 		aurrekoa.addEventListener('click',function(e){
@@ -193,6 +207,7 @@ $(document).ready(function () {
 			}
 			inpzkia = current + 1;
 			info.html(inpzkia);
+			inprimatuplay(infoplay, inpzkia);
 			run($(link),audio[0]);		
 		});
 		
@@ -205,6 +220,28 @@ $(document).ready(function () {
 			player.play();
 			info.html("0");
 	}
+
+	//Orrialdetik abestiari dagokion errenkada eskuratzeko funtzioa
+	function eraikiab(current){
+		abestia = "abestia" + current;	
+		return abestia;
+	}
+	function eraikiiru(current){
+		irudia = "iru" + current;
+		return irudia;
+	}
+	
+	function inprimatuplay(infoplay, inpzkia){
+			infoplay.html("");
+			ab = eraikiab(inpzkia);
+			ir = eraikiiru(inpzkia);
+			nireinfo1 = $('#' + ab + ' a #taldea' ).html();
+			nireinfo2 = $('#' + ab + ' a #abes' ).html();
+			nireinfo3 = $('#' + ir).html();
+			infoplay.html('<b>' + nireinfo2 + '</b> ' + nireinfo1 + ' ' + nireinfo3 );
+	
+	}
+
 });
 
 </script>
