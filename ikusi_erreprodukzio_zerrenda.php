@@ -20,6 +20,7 @@
     background:orange;
     color:white;
     border:1px solid black;
+    margin-top:5px;
     border-radius:20px;
     margin-right:5px;
     margin-left:5px;
@@ -33,6 +34,7 @@
     width: 100%;
     color: white;
     padding:10px;
+    height:45px;
     
 
 
@@ -118,12 +120,17 @@ text-shadow:1px 1px 1px black;
     height:50px;
     
 }
+.iruplay{
+    float:left;
+    width:35px;
+    height:35px;
+    border-radius:25px;
+}
 #infoplay{
 
    border-radius:15px !important;
    padding:5px !important; 
-   margin-top:2px;
-   background-color:darkgrey;
+   background-color:#444;
    color:white;
    float:left;
    margin-left:20px;
@@ -237,8 +244,8 @@ $(document).ready(function () {
 			ir = eraikiiru(inpzkia);
 			nireinfo1 = $('#' + ab + ' a #taldea' ).html();
 			nireinfo2 = $('#' + ab + ' a #abes' ).html();
-			nireinfo3 = $('#' + ir).html();
-			infoplay.html('<b>' + nireinfo2 + '</b> ' + nireinfo1 + ' ' + nireinfo3 );
+			nireinfo3 = $('#' + ir ).prop('src');
+			infoplay.html("<b>" + nireinfo2 + "</b> " + nireinfo1 + " <img class='iruplay' src='" + nireinfo3 + "'/>");
 	
 	}
 
