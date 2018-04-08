@@ -1,45 +1,31 @@
-<html><head> <style>
-   	#iruditxoa{
-		border-radius:25px !important;
-		padding:10 !important; 
-
-	}
-
-	.nireli {
-    		background: #333;
-    		margin: 1px;
-    		text-decoration: none;
-		list-style:none;
-    		padding: 0.5%;
-		width:50%;
-		text-shadow:1px 1px 2px black;
-
-    		
-	}
-	#bozkak{
-		float:left;
-		margin-left:10px;
-		margin-right:20px;
-		background-color:orange;
-		vertical-align: middle;
-		padding:15px;
-		color:white;
-		//border-radius:20px !important;
-		border:1px solid darkgrey;
-
-	}
-	#testua{
-		float:right;
-		vertical-align: middle;
-    		color: white;
-		margin-right:10px;
-	}
-	
-    </style></head><body>
 <?php
 //zerbitzariaren funtzio nagusiak biltzen
 //************************************PHP FUNTZIOEN HASIERA**********************************
 //datubaserako funtzio orokorrak 1.0 konektatu eta deskonektatu
+//CORS HASIERATU DENAK ONARTU! https://stackoverflow.com/questions/18382740/cors-not-working-php#18399709
+
+function cors_hasieratu(){
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+
+    // Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+       header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+       header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+    exit(0);
+}
+}
+
+cors_hasieratu();
+
 function konektatu(){
 	$zerbitzaria = "localhost";
 	$erabiltzailea = "root";
@@ -59,12 +45,6 @@ function deskonektatu($conn){
 	$conn->close();
 }
 
-function cors_hasieratu(){
-//goiburuen hasieratzea, informazio trukatzea ahalbideratzeko (nire ordenagailuan gutxienez xD)
-header('content-type: application/json; charset=utf-8');
-header("access-control-allow-origin: *");
-
-}
 
 //***********************************JSON planteamentua --> amaitu barik = probak!!!*************************+
 //0.- JSON fitxategia datubaseko datuekin sortu (behar bada...> kontzeptua)
@@ -149,11 +129,11 @@ function begiratu_datubasean(){
 	$bistaratu_zerrenda = "<form id='bidaliabestiak'>";
 	if ($result->num_rows > 0){
         	while($row = mysqli_fetch_assoc($result)){
-			$lerroa = "<input type='checkbox' name='" . $row["ab_id"] . "' id='" . $row["ab_id"] . "' value ='" . $row["ab_id"]  . "' ><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "</br>";  
+			$lerroa = "<input type='checkbox' name='" . $row["ab_id"] . "' id='" . $row["ab_id"] . "' value ='" . $row["ab_id"]  . "' ><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "<hr color='lightgrey'>";  
 			$bistaratu_zerrenda = $bistaratu_zerrenda . $lerroa;
 		}	
 	}
-	$bistaratu_zerrenda = $bistaratu_zerrenda . "<input type='button' name='bidali' value='bidali' onclick='bidali_hautatutakoak()'/></form>";
+	$bistaratu_zerrenda = $bistaratu_zerrenda . "<input type='button' id='bidali' name='bidali' value='bidali' onclick='bidali_hautatutakoak()'/></form>";
 	echo $bistaratu_zerrenda;
 	/* free result set */
         $result->free();
@@ -170,7 +150,7 @@ function begiratu_datubasean_hautatuak(){
 	if ($result->num_rows > 0){
         	while($row = mysqli_fetch_assoc($result)){			
 			//$irudia = $row["irudia"]
-			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireli'><div id='ab'><div id='bozkak'><b>" .  $row["konta"] . "</b></div><img id='iruditxoa' width='50px' height='50px' src='" . $row["irudia"] . "'/><div id='testua'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "</div></div></li></br>";
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireli'><div id='ab'><div id='bozkak'><b>" .  $row["konta"] . "</b></div><img id='iruditxoa' width='50px' height='50px' src='" . $row["irudia"] . "'/><div id='testua'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "</div></div></li>";
 		}	
 	}
 	$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
@@ -319,7 +299,8 @@ function kargatu_datubasea_abestiz(){
 		if (stripos($irudia,".jpg") == false) {
 			$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";
 		}
-		$bidea = "https://localhost/musikaboz/musika/" . $fitxizena;
+		//hemen ere aldatu behar bidea!!
+		$bidea = "http://192.168.0.158/musikaboz/musika/" . $fitxizena;
 		$sql = "INSERT INTO abestiak (ab_id, mota, taldea, abestia, iturria, irudia) VALUES ("  . $i . ",'lokala','" . $taldea . "','" . $abestia . "','" . $bidea . "','" . $irudia . "');";
 		$i = $i + 1 ;
 		if ($conn->query($sql) == TRUE) {	
@@ -393,6 +374,85 @@ function topatu_irudia_bing($testua){
 	}
 	return $emaitza4;	
 }
+//************************ erabiltzaileen kontrolerako funtzioak******************************************/
+
+function izena_eman($erab,$pass){
+	//konektatu
+	$conn = konektatu();
+	//datubasean bilaketa egin
+	$sql = "select erab from erabiltzaileak where erab='" . $erab . "' and pass='" . $pass . "';";
+	$result = $conn->query($sql);
+	$row = mysqli_fetch_assoc($result);
+	$erantzuna = $row['erab'];
+	//existitzen den edo ez frogatu	
+	if ($erantzuna != ""){
+		return $erantzuna;			
+	}else{
+		return "wtf";
+	} 	
+	$result->free();
+	deskonektatu($conn);
+}
+//begiratu ia erabiltzailea existitzen den edo ez 
+function begiratu_erab($erab){
+	$conn = konektatu();
+	//datubasean bilaketa egin
+	$sql = "select erab from erabiltzaileak where erab='" . $erab . "';";
+	$result = $conn->query($sql);
+	$row = mysqli_fetch_assoc($result);
+	$erantzuna = $row['erab'];
+	//existitzen den edo ez frogatu	
+	if ($erantzuna != ""){
+		return $erantzuna;			
+	}else{
+		return "wtf";
+	} 	
+	$result->free();
+	deskonektatu($conn);
+}
+
+//begiratu erabiltzaileak dagoeneko bozkatu duen edo ez TRUE: BOZKATU DU DAGOENEKO FALSE: EZ DU BOZKATU ORAINDIK
+function begiratu_bozkatuta($erab){
+	$conn = konektatu();
+	$sql = "select bozkatua from bozkatuta where erab='" . $erab . "';"; 
+	$result = $conn->query($sql);
+	$row = mysqli_fetch_assoc($result);
+	$erantzuna = $row['bozkatua'];
+	//existitzen den edo ez frogatu	
+	if ($erantzuna == ""){
+		return 'False';			
+	}else{
+		return $erantzuna;
+	} 	
+	$result->free();
+	deskonektatu($conn);
+}
+function erregistratu_bozkatuta($erab){
+	$conn = konektatu();
+	if (!begiratu_bozkatuta($erab)){
+		$sql  = "Insert into bozkatuta(erab,bozkatua) values ('" . $erab . "', 'True')";		
+		$result = $conn->query($sql);	
+		return true;	
+	}else{
+		return false;
+	}
+	$result->free();
+	deskonektatu($conn);
+}
+
+//$noiz ="2018-05-01";
+//$denbora = 60;
+//hasi_kontatzen($noiz, $denbora);
+function hasi_kontatzen($noiz, $denbora){
+	//mysql-formatua	
+	$today = date("Y-m-d H:i:s");
+	echo $today;
+
+}
+
+function eman_denbora($denbora){
+	echo $denbora;
+}
 //************************ PHP funtzioen bukaera **********************************//
 
-?></body></html>
+?>

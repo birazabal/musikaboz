@@ -1,6 +1,7 @@
 /*ADI! ZERBITZARIAREN HELBIDEA ADIERAZI BEHAR DA
 */
-var URL = "https://localhost/"
+//192.168.0.155:455 https://localhost/
+var URL = "http://192.168.0.158/"
 
 //
 function eskatu_hautapen_zerrenda(){             
