@@ -393,6 +393,34 @@ class Datubasea{
         	$result->free();
 		$this->deskonektatu();
 	}
+
+	function bistaratu_playlist(){
+        	$bistaratu_zerrenda = "<source src='";
+		$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";			
+		$this->konektatu();
+        	//$bozkakodea = sortu_kodea();
+		$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia,abestiak.iturria, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc LIMIT 10;";
+        	$result = $this->conn->query($sql);
+		$i = 1;
+		if ($result->num_rows > 0){
+        		while($row = mysqli_fetch_assoc($result)){
+				if ($i == 1){
+					$bistaratu_zerrenda = $bistaratu_zerrenda . $row["iturria"] . "'/></audio>";
+			        	$bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist'>";
+				
+				}	
+					
+					$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireliplay' id='abestia" . $i . "'> <div id='zkia'> ". $i ."</div> <img class='iru' id='iru" . $i ."'  src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'><div id='taldea'>" . $row["taldea"] . "</div><div id='abes'> " .  $row["abestia"] . "</div></a> <div id='bozkalist'>" . $row["konta"] . "</div></li>";
+				$i += 1;	
+			}	
+		}
+		$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
+		echo $bistaratu_zerrenda;
+		/* free result set */
+        	$result->free();
+		$this->deskonektatu();
+
+}
 }
 
 class Musikaboz{
