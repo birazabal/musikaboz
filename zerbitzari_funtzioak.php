@@ -356,71 +356,85 @@ class Datubasea{
 	}
 
 	function begiratu_datubasean_hautatuak(){
-        	$bistaratu_zerrenda = "<ul> ";
-		$this->konektatu();
-        	//$bozkakodea = sortu_kodea();
-		$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc;";
-        	$result = $this->conn->query($sql);
-		if ($result->num_rows > 0){
-        		while($row = mysqli_fetch_assoc($result)){			
-				//$irudia = $row["irudia"]
-				$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireli'><div id='ab'><div id='bozkak'><b>" .  $row["konta"] . "</b></div><img id='iruditxoa' width='50px' height='50px' src='" . $row["irudia"] . "'/><div id='testua'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "</div></div></li>";
-			}	
+		try{
+        		$bistaratu_zerrenda = "<ul> ";
+			$this->konektatu();
+        		//$bozkakodea = sortu_kodea();
+			$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc;";
+        		$result = $this->conn->query($sql);
+			if ($result->num_rows > 0){
+        			while($row = mysqli_fetch_assoc($result)){			
+					//$irudia = $row["irudia"]
+					$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireli'><div id='ab'><div id='bozkak'><b>" .  $row["konta"] . "</b></div><img id='iruditxoa' width='50px' height='50px' src='" . $row["irudia"] . "'/><div id='testua'><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "</div></div></li>";
+				}	
+			}
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
+			echo $bistaratu_zerrenda;
+			/* free result set */
+        		$result->free();
+			$this->deskonektatu();
 		}
-		$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
-		echo $bistaratu_zerrenda;
-		/* free result set */
-        	$result->free();
-		$this->deskonektatu();
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	}
 
 	function begiratu_datubasean(){
-        	$bistaratu_zerrenda = " ";
-		$this->konektatu();
-        	//$bozkakodea = sortu_kodea();
-		$sql = "SELECT * from abestiak";
-        	$result = $this->conn->query($sql);
-		$bistaratu_zerrenda = "<form id='bidaliabestiak'>";
-		if ($result->num_rows > 0){
-        		while($row = mysqli_fetch_assoc($result)){
-				$lerroa = "<input type='checkbox' name='" . $row["ab_id"] . "' id='" . $row["ab_id"] . "' value ='" . $row["ab_id"]  . "' ><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "<hr color='lightgrey'>";  
-				$bistaratu_zerrenda = $bistaratu_zerrenda . $lerroa;
-			}	
+		try{
+ 			$bistaratu_zerrenda = " ";
+			$this->konektatu();
+        		//$bozkakodea = sortu_kodea();
+			$sql = "SELECT * from abestiak";
+        		$result = $this->conn->query($sql);
+			$bistaratu_zerrenda = "<form id='bidaliabestiak'>";
+			if ($result->num_rows > 0){
+        			while($row = mysqli_fetch_assoc($result)){
+					$lerroa = "<input type='checkbox' name='" . $row["ab_id"] . "' id='" . $row["ab_id"] . "' value ='" . $row["ab_id"]  . "' ><b>" . $row["abestia"] . "</b> " . $row["taldea"] . "<hr color='lightgrey'>";  
+					$bistaratu_zerrenda = $bistaratu_zerrenda . $lerroa;
+				}	
+			}
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "<input type='button' id='bidali' name='bidali' value='bidali' onclick='bidali_hautatutakoak()'/></form>";
+			echo $bistaratu_zerrenda;
+        		$result->free();
+			$this->deskonektatu();
 		}
-		$bistaratu_zerrenda = $bistaratu_zerrenda . "<input type='button' id='bidali' name='bidali' value='bidali' onclick='bidali_hautatutakoak()'/></form>";
-		echo $bistaratu_zerrenda;
-		/* free result set */
-        	$result->free();
-		$this->deskonektatu();
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}		
 	}
 
 	function bistaratu_playlist(){
-        	$bistaratu_zerrenda = "<source src='";
-		$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";			
-		$this->konektatu();
-        	//$bozkakodea = sortu_kodea();
-		$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia,abestiak.iturria, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc LIMIT 10;";
-        	$result = $this->conn->query($sql);
-		$i = 1;
-		if ($result->num_rows > 0){
-        		while($row = mysqli_fetch_assoc($result)){
-				if ($i == 1){
-					$bistaratu_zerrenda = $bistaratu_zerrenda . $row["iturria"] . "'/></audio>";
-			        	$bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist'>";
+		try{
+        		$bistaratu_zerrenda = "<source src='";
+			$irudia = "https://openclipart.org/image/2400px/svg_to_png/130039/Music-icon.png";			
+			$this->konektatu();
+        		//$bozkakodea = sortu_kodea();
+			$sql = "SELECT abestiak.abestia,abestiak.taldea,abestiak.irudia,abestiak.iturria, count(bozkak.bozka_kop) as konta from abestiak, bozkak where abestiak.ab_id=bozkak.ab_id group by abestiak.abestia order by konta desc LIMIT 10;";
+        		$result = $this->conn->query($sql);
+			$i = 1;
+			if ($result->num_rows > 0){
+        			while($row = mysqli_fetch_assoc($result)){
+					if ($i == 1){
+						$bistaratu_zerrenda = $bistaratu_zerrenda . $row["iturria"] . "'/></audio>";
+			        		$bistaratu_zerrenda = $bistaratu_zerrenda . "<ul id='playlist'>";
 				
-				}	
+					}	
 					
 					$bistaratu_zerrenda = $bistaratu_zerrenda . "<li class='nireliplay' id='abestia" . $i . "'> <div id='zkia'> ". $i ."</div> <img class='iru' id='iru" . $i ."'  src='" . $row["irudia"] . "'/><a href='" . $row["iturria"] . "'><div id='taldea'>" . $row["taldea"] . "</div><div id='abes'> " .  $row["abestia"] . "</div></a> <div id='bozkalist'>" . $row["konta"] . "</div></li>";
-				$i += 1;	
-			}	
+					$i += 1;	
+				}	
+			}
+			$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
+			echo $bistaratu_zerrenda;
+			
+        		$result->free();
+			$this->deskonektatu();
 		}
-		$bistaratu_zerrenda = $bistaratu_zerrenda . "</ul>";
-		echo $bistaratu_zerrenda;
-		/* free result set */
-        	$result->free();
-		$this->deskonektatu();
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 
-}
+	}
 }
 
 class Musikaboz{
@@ -434,56 +448,91 @@ class Musikaboz{
 		
 	
 	public function __construct($iraupena){
-
-		$this->bozkaketa_hasi();
-		//echo "iraupena" . $iraupena . " ";
-		$this->iraupena = $iraupena;
-		$this->hasiera_ordua = time();
-		$this->bukaera_ordua = $this->hasiera_ordua + $this->iraupena * 1000 * 60; //minutuak gehitu milisegundutan 
-		//$this->iraupena = $iraupena;
-		$this->mezua = "Bozkaketa sortu berri : IRAUPENA " . $this->iraupena . " HASIERA ORDUA " .  $this->hasiera_ordua . " " . $this->bukaera_ordua ;
-		//session_start();		
-		//$_SESSION("hasiera_ordua") = $bestebat;
-		$this->inprimatu_mezua();
-	
+		try{
+			$this->bozkaketa_hasi();
+			//echo "iraupena" . $iraupena . " ";
+			$this->iraupena = $iraupena;
+			$this->hasiera_ordua = time();
+			$this->bukaera_ordua = $this->hasiera_ordua + $this->iraupena * 1000 * 60; //minutuak gehitu milisegundutan 
+			//$this->iraupena = $iraupena;
+			$this->mezua = "Bozkaketa sortu berri : IRAUPENA " . $this->iraupena . " HASIERA ORDUA " .  $this->hasiera_ordua . " " . $this->bukaera_ordua ;
+			//session_start();		
+			//$_SESSION("hasiera_ordua") = $bestebat;
+			$this->inprimatu_mezua();
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}	
 	}
 
 	//bozkaketa kontrolatzeko funtzioak
 	private function bozkaketa_hasi(){
-		
-		$this->bozmartxan = True;
-		
+		try{
+			$this->bozmartxan = True;
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	}
 	
 	private function bozkaketa_hasita_ote(){
-		return $this->bozmartxan;	
+		try{
+			return $this->bozmartxan;
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}	
 	}
 	
 	private function eman_bozkaketa_ordua(){
-		return $this->bukaera_ordua;
+		try{
+			return $this->bukaera_ordua;
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	} 
 
 	private function bozkaketa_ordua_ezarri($iraupena,$hasiera_ordua){
 		//time  UNIXen timestamp a jaso  gero bezeroan konparatzeko
-		$this->hasiera_ordua = $hasiera_ordua;
-		$this->iraupena = $iraupena;
-		echo $this->hasiera_ordua;
-		//return $this->hasiera_ordua;
-	
+		try{
+			$this->hasiera_ordua = $hasiera_ordua;
+			$this->iraupena = $iraupena;
+			echo $this->hasiera_ordua;
+			//return $this->hasiera_ordua;
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	}
 
 	public function bozkaketa_bukatu(){
-		$this->bozmartxan = False;
-		$this->mezua = "Bozkaketa bukatu berri";
-		$this->inprimatu_mezua();	
+		try{
+			$this->bozmartxan = False;
+			$this->mezua = "Bozkaketa bukatu berri";
+			$this->inprimatu_mezua();
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}	
 	}
 
 	public function bozkaketa_egoera_ikusi(){
-		return $this->bozmartxan;
+		try{
+			return $this->bozmartxan;
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	}	
 	
 	private function inprimatu_mezua(){
-		echo $this->mezua;
+		try{
+			echo $this->mezua;
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	}
 	
 	function cors_hasieratu(){
@@ -507,18 +556,38 @@ class Musikaboz{
 
 	//zki bat sinpleki sortzeko-jasotzeko funtzioa
 	private function sortu_kodea(){
-    		return rand(1,10000);
+		try{ 
+    			return rand(1,10000);
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	}
 	public function gehitu_erabiltzailea($erab){
-		//array batean hobe
-		$this->erabiltzaileak = $this->erabiltzaileak . $erab;
+		try{
+			//array batean hobe
+			$this->erabiltzaileak = $this->erabiltzaileak . $erab;
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 
 	}
 	public function eman_erabiltzaileak($erab){
-		return $this->erabiltzaileak;
+		try{
+			return $this->erabiltzaileak;
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	}
 	public function gorde_emaitzak(){
-		echo "bozkaketa emaitzak datubasean gordetzeko?";
+		try{
+			echo "bozkaketa emaitzak datubasean gordetzeko?";
+		}
+		catch(Exception $e) {
+  			printf("[!] Mezua: %s\n", $e->getMessage());
+		}
 	}
 }
 	
