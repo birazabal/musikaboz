@@ -139,6 +139,22 @@ text-shadow:1px 1px 1px black;
    text-align:center;
 
 }
+#infoplay b{
+  font-size:28px;
+  color:orange !important;
+  font-weight:lighter;
+  text-shadow:1px 1px 1px black;
+  padding-right:20px;
+
+}
+#infoplay i{
+  font-size:14px;
+  color:white !important;
+  font-weight:lighter;
+  text-shadow:1px 1px 1px black;
+  padding-right:20px;
+
+}
 </style></head><body>
 <div id="nirekontrolak"><div id="info">1</div>
 <input type="button" value="[<]" id="aurrekoa"  />
@@ -150,8 +166,8 @@ text-shadow:1px 1px 1px black;
 </body>
 <?php
 include 'zerbitzari_funtzioak.php';
-
-bistaratu_playlist();
+$dba = new Datubasea();
+$dba->bistaratu_playlist();
 ?>
 <script>
 $(document).ready(function () {
@@ -245,7 +261,7 @@ $(document).ready(function () {
 			nireinfo1 = $('#' + ab + ' a #taldea' ).html();
 			nireinfo2 = $('#' + ab + ' a #abes' ).html();
 			nireinfo3 = $('#' + ir ).prop('src');
-			infoplay.html("<b>" + nireinfo2 + "</b> " + nireinfo1 + " <img class='iruplay' src='" + nireinfo3 + "'/>");
+			infoplay.html("<b>" + nireinfo2 + "</b><i> " + nireinfo1 + "</i><img class='iruplay' src='" + nireinfo3 + "'/>");
 	
 	}
 

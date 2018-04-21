@@ -6,5 +6,7 @@ include 'zerbitzari_funtzioak.php';
 
 //************************ PHP funtzioen bukaera **********************************//
 
-begiratu_datubasean();
+$dba = new Datubasea();
+$dba->begiratu_datubasean();
+//begiratu_datubasean();
 ?>

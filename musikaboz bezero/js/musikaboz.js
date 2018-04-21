@@ -1,9 +1,9 @@
 /*ADI! ZERBITZARIAREN HELBIDEA ADIERAZI BEHAR DA
 */
 //192.168.0.155:455 https://localhost/
-var URL = "http://192.168.0.158/"
+var URL = "http://192.168.157/";//"http://192.168.0.158/";
 
-//
+//Hautatu daitezkeen abestien zerrenda eskuratu
 function eskatu_hautapen_zerrenda(){             
       $.ajax({    
         type: "GET",
@@ -15,8 +15,10 @@ function eskatu_hautapen_zerrenda(){
         }
 
         });
+	bozkaketa_denbora_eskuratu();
 }
 
+//Hautatutako elementuen zerrenda eskuratu
 function eskatu_hautatuen_zerrenda(){
                    
       $.ajax({    
@@ -31,6 +33,7 @@ function eskatu_hautatuen_zerrenda(){
         });
 }
 
+//Playerra bistaratzeko funtzioa
 function playerra_bistaratu(){
       $.ajax({    
         type: "GET",
@@ -44,6 +47,7 @@ function playerra_bistaratu(){
         });
 }
 
+//klik eginda dauden elementuak batzeko funtzioa. 
 function aukeratu_zerrenda(){
 	aukeratuak = [];
 	i = 0;       
@@ -54,10 +58,9 @@ function aukeratu_zerrenda(){
            //console.log($(this).val());        
 	});
         return aukeratuak;
-
 }
 
-
+//zerrenda aukeratzeko funtzio zaharra 
 function aukeratu_zerrenda_zaharra(){
 	aukeratuak = "";       
 	 $("input:checked").each(function() {
@@ -69,6 +72,7 @@ function aukeratu_zerrenda_zaharra(){
         return aukeratuak;
 
 }
+//Hautatutako zerrenda bidaltzeko funtzioa:
 function bidali_hautatutakoak(){ 
 
      bidaltzeko = aukeratu_zerrenda();
@@ -83,3 +87,49 @@ function bidali_hautatutakoak(){
         alert( "Zerbitzariaren erantzuna: " + msg );
     });
 }
+
+//BOZKAKETAren bozkaketa tartearen inguruko datuak eskuratu
+
+var errepikakorra;
+function bozkaketa_denbora_eskuratu(){
+	//erab = $('#erabinfo').val();
+	//this.kont = 60;
+	$.ajax({
+	  method: "GET",
+	  url: URL + "musikaboz/bozkaketa_datuak_jaso.php",
+	 //data: { erabiltzailea: erab},
+	})
+	.done (function(msg){
+		var oraingo_ordua =  $.now(); // jsn Date.now(); diff ??
+		var jasotako_muga = msg;
+		localStorage.setItem("jasotako_muga",jasotako_muga);
+		alert(msg + " " + oraingo_ordua);		
+		//var ezberdintasuna = parseInt(jasotako muga) - parseInt(oraingo_ordua);
+		ezberdintasuna = msg - oraingo_ordua;
+		ezberdintasuna = Math.floor(ezberdintasuna / 1000);
+		localStorage.setItem("segunduak",ezberdintasuna);
+		alert(ezberdintasuna);
+		//this->kont = ezberdintasuna o holako zeoze 
+		this.kont = 60;
+		//this->ezberdintasuna = 0;
+		//bozkaketaren hasiera ordua jaso, honen arabera ordularia jartzeko
+		errepikakorra = setInterval(erlojua, 1000); //1000 will  run it every 1 second
+
+		
+	});
+}
+function erlojua(){
+	//muga = localStorage.getItem("jasotako_muga");
+	segunduak = localStorage.getItem("segunduak");	
+	//alert(segunduak);
+	if (segunduak > 0){
+		segunduak -= 1;
+		localStorage.setItem("segunduak",segunduak);
+		minutuak = Math.floor(segunduak / 60);
+		bensegunduak = segunduak % 60;
+		$("#denbora").html(minutuak + " " + bensegunduak);	
+	}else{
+		//clearInterval(errepikakorra);
+	}	
+}
+

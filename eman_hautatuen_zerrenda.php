@@ -41,7 +41,8 @@
 </style></head><body>
 <?php
 include 'zerbitzari_funtzioak.php';
-begiratu_datubasean_hautatuak();
+$dba = new Datubasea();
+$dba->begiratu_datubasean_hautatuak();
 ?>
 </body>
 </html>

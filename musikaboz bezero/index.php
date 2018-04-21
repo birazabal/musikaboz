@@ -1,3 +1,10 @@
+<?php
+//erabiltzailearen datuak bistaratzeko PHP funtzioa
+function bistaratu_erabiltzaile_datuak(){
+	session_start();
+	echo $_SESSION["izena"];
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +44,8 @@
     </div>
 <!-- PANELAren bukaera -->
   <div data-role="header" data-theme="b">
-    <h1>Musikaboz</h1>
+
+    <h1>Musikaboz</h1><div id="denbora" class="ui-btn-right"></div>
    <a  data-icon="gear" class="ui-btn-left" href="#ezkerMenua">Menua</a>
     </div>
 
@@ -49,11 +57,10 @@
   </div>
 
   <div data-role="footer" data-position="fixed" data-theme="b">
-    <h1>Erabiltzailea: 
+    <h1>Erabiltzailea: <div id="erabinfo">
 <?php 
-session_start();
-echo $_SESSION["izena"];
-?></h1>
+bistaratu_erabiltzaile_datuak();
+?></div></h1>
   </div>
 </div> 
 
