@@ -103,18 +103,18 @@ function bozkaketa_denbora_eskuratu(){
 		var oraingo_ordua =  $.now(); // jsn Date.now(); diff ??
 		var jasotako_muga = msg;
 		localStorage.setItem("jasotako_muga",jasotako_muga);
-		alert(msg + " " + oraingo_ordua);		
+		//alert(msg + " " + oraingo_ordua);		
 		//var ezberdintasuna = parseInt(jasotako muga) - parseInt(oraingo_ordua);
 		ezberdintasuna = msg - oraingo_ordua;
 		ezberdintasuna = Math.floor(ezberdintasuna / 1000);
-		localStorage.setItem("segunduak",ezberdintasuna);
-		alert(ezberdintasuna);
-		//this->kont = ezberdintasuna o holako zeoze 
-		this.kont = 60;
-		//this->ezberdintasuna = 0;
-		//bozkaketaren hasiera ordua jaso, honen arabera ordularia jartzeko
-		errepikakorra = setInterval(erlojua, 1000); //1000 will  run it every 1 second
-
+		//abiatuta = localStorage.getItem("erlojua_abiatuta");
+		if (localStorage.getItem("erlojua_abiatuta") === null || localStorage.getItem("erlojua_abiatuta") == "False"){
+			localStorage.setItem("erlojua_abiatuta", "True");			
+			localStorage.setItem("segunduak",ezberdintasuna);
+			alert(ezberdintasuna);
+			//bozkaketaren hasiera ordua jaso, honen arabera ordularia jartzeko
+			errepikakorra = setInterval(erlojua, 1000); //1000 will  run it every 1 second
+		}
 		
 	});
 }
@@ -129,7 +129,8 @@ function erlojua(){
 		bensegunduak = segunduak % 60;
 		$("#denbora").html(minutuak + " " + bensegunduak);	
 	}else{
-		//clearInterval(errepikakorra);
+		clearInterval(errepikakorra);
+		localStorage.setItem("erlojua_abiatuta", "False")
 	}	
 }
 
